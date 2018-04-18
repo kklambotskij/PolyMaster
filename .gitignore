@@ -118,3 +118,5 @@ Library/assetDatabase3
 *.dwlt
 *.mdb
 >>>>>>> e0a2383f8706076bbf94c552feefbba99707e1ed
+*.ide-shm
+*.ide-wal

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Loader : MonoBehaviour {
 
+    //Making this script global and editable
     private static Loader _instance;
     public static Loader instance
     {
@@ -18,9 +19,9 @@ public class Loader : MonoBehaviour {
             return _instance;
         }
     }
-    public List<Color> colors = new List<Color>();
-    Shifts shift;
 
+    public List<Color> colors = new List<Color>();
+    
     public void InitColors()
     {
         colors.Add(Color.green);
@@ -31,9 +32,9 @@ public class Loader : MonoBehaviour {
         colors.Add(Color.gray);
         colors.Add(Color.white);
     }
+
     private void Awake()
     {
-        shift = GameObject.Find("Scripts").GetComponent<Shifts>();
         Load();
     }
 	
@@ -47,15 +48,13 @@ public class Loader : MonoBehaviour {
         }
         Shapes.Clear();
         Read();
-        using (StreamWriter sw = File.CreateText("log.txt"))
-        {
-            sw.Close();
-        }
-        foreach (var item in Shifts.instance.Shapes)
+        using (StreamWriter sw = File.CreateText("log.txt")) { sw.Close(); }
+        foreach (var item in Shapes)
         {
             WriteMesh(item);
         }
 	}
+    //To do
     void MarkObject(string[] input)
     {
         switch (input[1])
@@ -76,6 +75,7 @@ public class Loader : MonoBehaviour {
                 break;
         }
     }
+    //Parser
     void Read()
     {
         StreamReader sr = new StreamReader("output.txt");
@@ -103,6 +103,7 @@ public class Loader : MonoBehaviour {
         }
         sr.Close();
     }
+
     void ShowError(string[] input)
     {
         if(input.Length < 2) { return; }
@@ -113,10 +114,6 @@ public class Loader : MonoBehaviour {
         }
         GameObject.Find("Canvas").transform.Find("Error").transform.Find("Text").GetComponent<Text>().text = error;
         GameObject.Find("Canvas").transform.Find("Error").gameObject.SetActive(true);
-    }
-    void ColorMesh()
-    {
-
     }
 
     void MoveMesh(string[] input)
@@ -137,7 +134,7 @@ public class Loader : MonoBehaviour {
         }
         if (verts.Count < 2) { return; }
         Vector3 vector3 = verts[1] - verts[0];
-        shift.Shift(input[2], vector3, 1);
+        Shifts.instance.Shift(input[2], vector3, 1);
     }
 
     public List<Vector3> ReadMesh(string[] input)
@@ -198,6 +195,7 @@ public class Loader : MonoBehaviour {
         }
         return poly;
     }
+
     void CreateNewMesh(string[] buffer)
     {
         GameObject obj = (GameObject)Instantiate(Resources.Load("Prefubs/Shape"));
@@ -206,5 +204,4 @@ public class Loader : MonoBehaviour {
         Shapes.Add(new Shape(ReadMesh(buffer), buffer[2]));
         Shifts.instance.tasks.Add(new Shifts.Task(Loader.instance.Shapes[Shapes.Count - 1]));
     }
-
 }

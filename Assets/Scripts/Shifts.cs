@@ -6,6 +6,7 @@ using System;
 
 public class Shifts : MonoBehaviour {
 
+    //Making this script global and editable
     private static Shifts _instance;
     public static Shifts instance
     {
@@ -16,21 +17,19 @@ public class Shifts : MonoBehaviour {
             return _instance;
         }
     }
-    Loader loader;
+
     public float globalSpeed = 2f;
     public bool pause;
-    // Use this for initialization
+    
     public class Task
     {
         public enum Type {Move, Shape, Mark}
         public Type type;
+
+        //Create shape or Move Shape
         public Shape shape;
         public Movement move;
         public bool done;
-
-        public string markName;
-        public string markParent;
-        public int markIndex;
 
         public Task(Shape shape)
         {
@@ -38,6 +37,18 @@ public class Shifts : MonoBehaviour {
             type = Type.Shape;
             this.shape = shape;
         }
+        public Task(Movement move)
+        {
+            type = Type.Move;
+            done = false;
+            this.move = move;
+        }
+
+        //Mark object
+        public string markName;
+        public string markParent;
+        public int markIndex;
+
         public Task(string markName, string markParent, int markIndex)
         {
             done = false;
@@ -46,32 +57,30 @@ public class Shifts : MonoBehaviour {
             this.markParent = markParent;
             this.markIndex = markIndex;
         }
-        public Task(Movement move)
-        {
-            type = Type.Move;
-            done = false;
-            this.move = move;
-        }
     }
+
     public class Movement
     {
         public GameObject gameObject;
         public Vector3 shift;
         public float spd;
+
         public Movement(Movement move)
         {
             gameObject = move.gameObject;
             this.shift = move.shift + this.gameObject.transform.position;
             spd = move.spd;
         }
+
         public Movement(Shape poly, Vector3 shift)
         {
             gameObject = poly.gameObject;
             this.shift = shift + poly.gameObject.transform.position;
             spd = 1;
         }
+
         public Movement(Shape poly, Vector3 shift, float speed)
-        {
+        { 
             if (poly.gameObject != null)
             {
                 gameObject = poly.gameObject;
@@ -84,33 +93,34 @@ public class Shifts : MonoBehaviour {
             spd = speed;
         }
     }
+
     int currentTask;
     bool moving;
     public List<Task> tasks = new List<Task>();
+    public List<Movement> moves = new List<Movement>();
+
     void NextTask()
     {
         if(currentTask < -1 || currentTask > tasks.Count - 2) { return; }
         currentTask++;
         StartCoroutine(Example());
     }
+    //Awake starts before Start()
     private void Awake()
     {
         moving = false;
         pause = true;
-        loader = GameObject.Find("Scripts").GetComponent<Loader>();
+        currentTask = -1;
     }
+
     private void Start()
     {
-        currentTask = -1;
         NextTask();
     }
-    public List<Movement> moves = new List<Movement>();
-    public List<Shape> Shapes;
-    public List<GameObject> Objects;
 
     public void Shift(string name, Vector3 shift, float speed)
     {
-        int index = loader.FindShape(name);
+        int index = Loader.instance.FindShape(name);
         if (index < 0) { return; }
         if (Loader.instance.Shapes[index].gameObject == null) { return; }
         moves.Add(new Movement(Loader.instance.Shapes[index], shift, speed));
@@ -119,26 +129,27 @@ public class Shifts : MonoBehaviour {
 
     void MoveProcessing()
     {
-        if(moves.Count < 1) { return; }
-        if (moves[0].gameObject.transform.position == moves[0].shift)
+        if (moving && !pause)
         {
-            Debug.Log(String.Concat("Move to ", moves[0].shift.x, " ", moves[0].shift.z, " complete"));
-            moves.RemoveAt(0);
             if (moves.Count < 1) { return; }
-            moves[0].shift = new Vector3(moves[0].gameObject.transform.position.x, moves[0].gameObject.transform.position.y, moves[0].gameObject.transform.position.z) + moves[0].shift;
-            moving = false;
-            NextTask();
+            if (moves[0].gameObject.transform.position == moves[0].shift)
+            {
+                Debug.Log(String.Concat("Move to ", moves[0].shift.x, " ", moves[0].shift.z, " complete"));
+                moves.RemoveAt(0);
+                if (moves.Count < 1) { return; }
+                moves[0].shift = new Vector3(moves[0].gameObject.transform.position.x, moves[0].gameObject.transform.position.y, moves[0].gameObject.transform.position.z) + moves[0].shift;
+                moving = false;
+                NextTask();
+            }
+            moves[0].gameObject.transform.position = Vector3.MoveTowards(moves[0].gameObject.transform.position, moves[0].shift, maxDistanceDelta: moves[0].spd * Time.deltaTime);
         }
-        moves[0].gameObject.transform.position = Vector3.MoveTowards(moves[0].gameObject.transform.position, moves[0].shift, maxDistanceDelta: moves[0].spd * Time.deltaTime);
     }
 
     void Update()
     {
-        if (moving)
-        {
-            MoveProcessing();
-        }
+        MoveProcessing();
     }
+
     IEnumerator Example()
     {
         yield return new WaitForSeconds(globalSpeed);
@@ -172,8 +183,6 @@ public class Shifts : MonoBehaviour {
                     }
 #endif
                     NextTask();
-                    break;
-                default:
                     break;
             }
         }

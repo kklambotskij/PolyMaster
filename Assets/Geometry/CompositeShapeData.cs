@@ -21,6 +21,14 @@ namespace Sebastian.Geometry
             public List<CompositeShapeData> holes = new List<CompositeShapeData>();
             public bool IsValidShape { get; private set; }
 
+            public Vector3 ToXZ(this Vector3 @this)
+            {
+                return new Vector3(
+                    @this.x,
+                    0,
+                    @this.y);
+            }
+
             public CompositeShapeData(Vector3[] points)
             {
                 this.points = points.Select(v => v.ToXZ()).ToArray();

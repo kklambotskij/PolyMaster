@@ -126,7 +126,6 @@ public class Shifts : MonoBehaviour {
         moves.Add(new Movement(Loader.instance.Shapes[index], shift, speed));
         tasks.Add(new Task(moves[moves.Count - 1]));
     }
-
     void MoveProcessing()
     {
         if (moving && !pause)
@@ -173,6 +172,7 @@ public class Shifts : MonoBehaviour {
                     NextTask();
                     break;
                 case Task.Type.Mark:
+#warning Todo: add marked objects by task
 #if false
                     GameObject point = GameObject.Find(tasks[currentTask].markParent);
                     point = point.transform.Find("point " + tasks[currentTask].markIndex).gameObject;

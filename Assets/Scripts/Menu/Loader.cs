@@ -21,7 +21,8 @@ public class Loader : MonoBehaviour {
     }
 
     public List<Color> colors = new List<Color>();
-    
+
+#warning Todo: Add more colors
     public void InitColors()
     {
         colors.Add(Color.green);
@@ -54,7 +55,7 @@ public class Loader : MonoBehaviour {
             WriteMesh(item);
         }
 	}
-    //To do
+#warning Todo: Mark objects or clear it properly.
     void MarkObject(string[] input)
     {
         switch (input[1])
@@ -196,6 +197,7 @@ public class Loader : MonoBehaviour {
         return poly;
     }
 
+#warning Todo: add support to creating chain and points.
     void CreateNewMesh(string[] buffer)
     {
         GameObject obj = (GameObject)Instantiate(Resources.Load("Prefubs/Shape"));

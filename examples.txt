@@ -1,0 +1,45 @@
+new polyF polyF 4
+0:0
+0:4
+4:4
+4:0
+new polyM polyA 4
+1:0
+0:1
+1:2
+2:1
+new polyM polyB 4
+2.5:0.5
+0:2
+1.5:4
+3.5:3
+
+new polyF polyF 4
+0:0
+0:4
+4:4
+4:0
+new polyM polyA 4
+1:0
+0:1
+1:2
+2:1
+new polyM polyB 3
+2:0
+0:1
+3:2
+
+new polyF polyF 4
+0:0
+0:8
+8:8
+8:0
+new polyM polyA 4
+1:0
+0:1
+1:4
+3:2
+new polyM polyB 3
+2:0
+0:3
+4:1

@@ -64,6 +64,7 @@ public class Shifts : MonoBehaviour {
         public GameObject gameObject;
         public Vector3 shift;
         public float spd;
+        public bool hard;
 
         public Movement(Movement move)
         {
@@ -79,12 +80,20 @@ public class Shifts : MonoBehaviour {
             spd = 1;
         }
 
-        public Movement(Shape poly, Vector3 shift, float speed)
+        public Movement(Shape poly, Vector3 shift, float speed, bool hard)
         { 
             if (poly.gameObject != null)
             {
                 gameObject = poly.gameObject;
-                this.shift = shift + new Vector3(poly.gameObject.transform.position.x, gameObject.transform.position.y, poly.gameObject.transform.position.z);
+                this.hard = hard;
+                if (hard)
+                {
+                    this.shift = shift;
+                }
+                else
+                {
+                    this.shift = shift + new Vector3(poly.gameObject.transform.position.x, gameObject.transform.position.y, poly.gameObject.transform.position.z);
+                }
             }
             else
             {
@@ -118,12 +127,12 @@ public class Shifts : MonoBehaviour {
         NextTask();
     }
 
-    public void Shift(string name, Vector3 shift, float speed)
+    public void Shift(string name, Vector3 shift, float speed, bool hard)
     {
         int index = Loader.instance.FindShape(name);
         if (index < 0) { return; }
         if (Loader.instance.Shapes[index].gameObject == null) { return; }
-        moves.Add(new Movement(Loader.instance.Shapes[index], shift, speed));
+        moves.Add(new Movement(Loader.instance.Shapes[index], shift, speed, hard));
         tasks.Add(new Task(moves[moves.Count - 1]));
     }
     void MoveProcessing()
@@ -136,7 +145,10 @@ public class Shifts : MonoBehaviour {
                 Debug.Log(String.Concat("Move to ", moves[0].shift.x, " ", moves[0].shift.z, " complete"));
                 moves.RemoveAt(0);
                 if (moves.Count < 1) { return; }
-                moves[0].shift = new Vector3(moves[0].gameObject.transform.position.x, moves[0].gameObject.transform.position.y, moves[0].gameObject.transform.position.z) + moves[0].shift;
+                if (moves[0].hard == false)
+                {
+                    moves[0].shift = new Vector3(moves[0].gameObject.transform.position.x, moves[0].gameObject.transform.position.y, moves[0].gameObject.transform.position.z) + moves[0].shift;
+                }
                 moving = false;
                 NextTask();
             }

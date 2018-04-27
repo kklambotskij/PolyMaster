@@ -132,9 +132,23 @@ public class Loader : MonoBehaviour {
             }
             verts.Add(new Vector3(buf[0], 0, buf[1]));
         }
-        if (verts.Count < 2) { return; }
-        Vector3 vector3 = verts[1] - verts[0];
-        Shifts.instance.Shift(input[2], vector3, 1);
+        Vector3 vector3 = new Vector3(0, 0, 0);
+        bool hard = false;
+        switch (input[3])
+        {
+            case "from":
+                if (verts.Count < 2) { return; }
+                vector3 = verts[1] - verts[0];
+                break;
+            case "to":
+                if (verts.Count < 1) { return; }
+                vector3 = verts[0];
+                hard = true;
+                break;
+            default:
+                return;
+        }
+        Shifts.instance.Shift(input[2], vector3, 1, hard);
     }
 
     public List<Vector3> ReadMesh(string[] input)

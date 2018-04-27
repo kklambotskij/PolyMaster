@@ -17,7 +17,7 @@ public class ShapeCreator : MonoBehaviour
 
     public void Start()
     {
-
+        
     }
     public void AddShape(Shape shape)
     {

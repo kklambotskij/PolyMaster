@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sebastian.Geometry;
 using System;
+using UnityEngine.UI;
 
 public class Shifts : MonoBehaviour {
 
@@ -18,7 +19,12 @@ public class Shifts : MonoBehaviour {
         }
     }
 
-    public float globalSpeed = 2f;
+    public float globalSpeed = 0.1f;
+    public void ChangeGlobalSpeed()
+    {
+        globalSpeed = GameObject.Find("Canvas").transform.Find("InputSpeed").GetComponent<Slider>().value;
+    }
+
     public bool pause;
     
     public class Task
@@ -85,14 +91,15 @@ public class Shifts : MonoBehaviour {
             if (poly.gameObject != null)
             {
                 gameObject = poly.gameObject;
+                shift += new Vector3(0, gameObject.transform.position.y, 0);
                 this.hard = hard;
                 if (hard)
                 {
-                    this.shift = shift;
+                    this.shift = shift - poly.points[0];
                 }
                 else
                 {
-                    this.shift = shift + new Vector3(poly.gameObject.transform.position.x, gameObject.transform.position.y, poly.gameObject.transform.position.z);
+                    this.shift = shift + new Vector3(poly.gameObject.transform.position.x, 0, poly.gameObject.transform.position.z);
                 }
             }
             else
@@ -152,7 +159,7 @@ public class Shifts : MonoBehaviour {
                 moving = false;
                 NextTask();
             }
-            moves[0].gameObject.transform.position = Vector3.MoveTowards(moves[0].gameObject.transform.position, moves[0].shift, maxDistanceDelta: moves[0].spd * Time.deltaTime);
+            moves[0].gameObject.transform.position = Vector3.MoveTowards(moves[0].gameObject.transform.position, moves[0].shift, maxDistanceDelta: globalSpeed * Time.deltaTime);
         }
     }
 
@@ -163,7 +170,7 @@ public class Shifts : MonoBehaviour {
 
     IEnumerator Example()
     {
-        yield return new WaitForSeconds(globalSpeed);
+        yield return new WaitForSeconds(1/globalSpeed);
         if(pause) { StartCoroutine(Example()); }
         else
         {

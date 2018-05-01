@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sebastian.Geometry;
+using System;
 
 public class RunTimeCreator : MonoBehaviour {
 
@@ -18,14 +19,27 @@ public class RunTimeCreator : MonoBehaviour {
         a = (x > 0) ? a + 90 : a + 270;
         return a;
     }
-    public void CreateBorder()
+    public void CreatePoints()
     {
         for (int i = 0; i < shapeCreator.shapes[0].points.Count; i++)
         {
             GameObject point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
             point.transform.position = new Vector3(shapeCreator.shapes[0].points[i].x, 5, shapeCreator.shapes[0].points[i].z);
+            point.name = String.Concat(shapeCreator.shapes[0].name, "_", i.ToString());
+            point.transform.SetParent(transform.parent);
+            point.SetActive(false);
+        }
+    }
+    public void CreateBorder()
+    {
+        for (int i = 0; i < shapeCreator.shapes[0].points.Count; i++)
+        {
+#if false //Now also creates points in other mods
+            GameObject point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
+            point.transform.position = new Vector3(shapeCreator.shapes[0].points[i].x, 5, shapeCreator.shapes[0].points[i].z);
             point.name = "point " + i.ToString();
             point.transform.SetParent(transform.parent);
+#endif
             GameObject obj = (GameObject)Instantiate(Resources.Load("Prefubs/Border1"));
             obj.name = "side " + i.ToString();
             obj.GetComponent<MeshRenderer>().material.color = fillColor;

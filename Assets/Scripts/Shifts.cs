@@ -29,7 +29,7 @@ public class Shifts : MonoBehaviour {
     
     public class Task
     {
-        public enum Type {Move, Shape, Mark}
+        public enum Type {Move, Shape, Mark, Hide}
         public Type type;
 
         //Create shape or Move Shape
@@ -53,15 +53,28 @@ public class Shifts : MonoBehaviour {
         //Mark object
         public string markName;
         public string markParent;
-        public int markIndex;
-
-        public Task(string markName, string markParent, int markIndex)
+        public Vector3 point;
+        public Task(string markName, bool hide)
         {
             done = false;
-            type = Type.Mark;
             this.markName = markName;
-            this.markParent = markParent;
-            this.markIndex = markIndex;
+            if (hide)
+            {
+                type = Type.Hide; //clear Mark
+            }
+            else
+            {
+                type = Type.Mark; //Mark
+            }
+        }
+        //Create new point
+        public Task(string markName, string parentName, Vector3 point)
+        {
+            done = false;
+            this.markName = markName;
+            this.markParent = parentName;
+            this.point = point;
+            type = Type.Mark;
         }
     }
 
@@ -146,7 +159,7 @@ public class Shifts : MonoBehaviour {
     {
         if (moving && !pause)
         {
-            if (moves.Count < 1) { return; }
+            if (moves.Count < 1) { moving = false; NextTask(); return; }
             if (moves[0].gameObject.transform.position == moves[0].shift)
             {
                 Debug.Log(String.Concat("Move to ", moves[0].shift.x, " ", moves[0].shift.z, " complete"));
@@ -183,6 +196,7 @@ public class Shifts : MonoBehaviour {
                     moving = false;
                     RunTimeCreator rtc = tasks[currentTask].shape.gameObject.transform.Find("Shape Creator").GetComponent<RunTimeCreator>();
                     rtc.LoadShape();
+                    rtc.CreatePoints();
                     if (tasks[currentTask].shape.name.StartsWith("char"))
                     {
                         rtc.CreateBorder();
@@ -192,16 +206,31 @@ public class Shifts : MonoBehaviour {
                     break;
                 case Task.Type.Mark:
 #warning Todo: add marked objects by task
-#if false
-                    GameObject point = GameObject.Find(tasks[currentTask].markParent);
-                    point = point.transform.Find("point " + tasks[currentTask].markIndex).gameObject;
+                    GameObject point;
+                    if (tasks[currentTask].markParent != null)
+                    {
+                        point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
+                        point.transform.position = new Vector3(tasks[currentTask].point.x, 5, tasks[currentTask].point.z);
+                        point.name = tasks[currentTask].markName;
+                        point.transform.SetParent(transform.parent);
+                    }
+                    else
+                    {
+                        point = GameObject.Find(tasks[currentTask].markName).gameObject;
+                    }
                     if (point != null)
                     {
+#if false
                         point.name = tasks[currentTask].markName;
                         point.GetComponent<MeshRenderer>().material.color = Color.red;
-                    }
+#else
+                        point.SetActive(true);
 #endif
+                    }
                     NextTask();
+                    break;
+                case Task.Type.Hide:
+                    GameObject.Find(tasks[currentTask].markName).SetActive(false);
                     break;
             }
         }

@@ -55,22 +55,35 @@ public class Loader : MonoBehaviour {
             WriteMesh(item);
         }
 	}
-#warning Todo: Mark objects or clear it properly.
+
     void MarkObject(string[] input)
     {
+        if (input.Length < 1) { return; }
         switch (input[1])
         {
             case "new":
-                string name = input[3];
-                string parentName = input[6];
-                int index = 0;
-                if (input[7] != "custom")
+                if (input.Length < 2) { return; }
+                switch (input[2])
                 {
-                    index = Convert.ToInt32(input[7]);
+                    case "point":
+                        if (input.Length < 7) { return; }
+                        string pointName = input[3];
+                        string parentName = input[6];
+                        string[] str = { "new", "point", parentName + "_" + pointName, input[7]};
+                        Shifts.instance.tasks.Add(new Shifts.Task(pointName, parentName, ReadMesh(str)[0]));
+                        break;
+                    default:
+                        break;
                 }
-                Shifts.instance.tasks.Add(new Shifts.Task(name, parentName, index));
+                break;
+            case "point":
+                if (input.Length < 3) { return; }
+                string name = input[2];
+                Shifts.instance.tasks.Add(new Shifts.Task(name, false));
                 break;
             case "clear":
+                if (input.Length < 3) { return; }
+                Shifts.instance.tasks.Add(new Shifts.Task(input[2], true));
                 break;
             default:
                 break;

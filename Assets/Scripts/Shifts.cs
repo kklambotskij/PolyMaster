@@ -207,25 +207,18 @@ public class Shifts : MonoBehaviour {
                 case Task.Type.Mark:
 #warning Todo: add marked objects by task
                     GameObject point;
+                    point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
+                    point.transform.position = new Vector3(tasks[currentTask].point.x, 5, tasks[currentTask].point.z);
+                    point.name = tasks[currentTask].markName;
                     if (tasks[currentTask].markParent != null)
                     {
-                        point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
-                        point.transform.position = new Vector3(tasks[currentTask].point.x, 5, tasks[currentTask].point.z);
-                        point.name = tasks[currentTask].markName;
-                        point.transform.SetParent(transform.parent);
-                    }
-                    else
-                    {
-                        point = GameObject.Find(tasks[currentTask].markName).gameObject;
+                        GameObject parent = GameObject.Find(tasks[currentTask].markParent);
+                        if(parent == null) { break; }
+                        point.transform.SetParent(parent.transform);
                     }
                     if (point != null)
                     {
-#if false
-                        point.name = tasks[currentTask].markName;
-                        point.GetComponent<MeshRenderer>().material.color = Color.red;
-#else
                         point.SetActive(true);
-#endif
                     }
                     NextTask();
                     break;

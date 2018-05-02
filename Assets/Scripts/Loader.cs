@@ -33,6 +33,7 @@ public class Loader : MonoBehaviour {
         colors.Add(Color.magenta);
         colors.Add(Color.gray);
         colors.Add(Color.white);
+        colors.Add(Color.red);
     }
 
     private void Awake()
@@ -111,6 +112,8 @@ public class Loader : MonoBehaviour {
                     break;
                 case "error":
                     ShowError(buffer);
+                    break;
+                case "messages":
                     break;
                 default:
                     break;
@@ -237,7 +240,7 @@ public class Loader : MonoBehaviour {
         obj.transform.position += new Vector3(0, Shapes.Count/10f, 0);
         Shapes.Add(new Shape(ReadMesh(buffer), buffer[2]));
         CreateToogleButton(Shapes[Shapes.Count - 1]);
-        Shifts.instance.tasks.Add(new Shifts.Task(Shapes[Shapes.Count - 1]));
+        Shifts.instance.tasks.Add(new Shifts.Task(Loader.instance.Shapes[Shapes.Count - 1]));
     }
 
     int toogleCount = 0;
@@ -245,7 +248,7 @@ public class Loader : MonoBehaviour {
     {
         GameObject button = (GameObject)Instantiate(Resources.Load("Prefubs/Toogle"));
         button.transform.SetParent(GameObject.Find("Canvas").transform);
-        button.transform.position = new Vector2(132, 876 - 64*toogleCount);
+        button.transform.position = new Vector2(110, 578 - 50*toogleCount);
         button.name = "Toogle " + toogleCount;
         button.GetComponentInChildren<Text>().text = shape.name;
         toogleCount++;

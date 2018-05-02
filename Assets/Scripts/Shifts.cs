@@ -207,14 +207,20 @@ public class Shifts : MonoBehaviour {
                 case Task.Type.Mark:
 #warning Todo: add marked objects by task
                     GameObject point;
-                    point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
-                    point.transform.position = new Vector3(tasks[currentTask].point.x, 5, tasks[currentTask].point.z);
-                    point.name = tasks[currentTask].markName;
-                    if (tasks[currentTask].markParent != null)
+                    if (tasks[currentTask].markParent == null)
                     {
+                        string[] str = tasks[currentTask].markName.Split('_');
+                        if (str.Length < 2) { break; }
+                        point = GameObject.Find(str[0]).transform.Find(tasks[currentTask].markName).gameObject; //Case if point exists
+                    }
+                    else //point doesn't exist and we need to create it
+                    {
+                        point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
+                        point.transform.position = new Vector3(tasks[currentTask].point.x, 5, tasks[currentTask].point.z);
                         GameObject parent = GameObject.Find(tasks[currentTask].markParent);
-                        if(parent == null) { break; }
+                        if (parent == null) { break; }
                         point.transform.SetParent(parent.transform);
+                        point.name = tasks[currentTask].markName;
                     }
                     if (point != null)
                     {

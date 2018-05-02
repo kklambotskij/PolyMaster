@@ -5,6 +5,7 @@ using UnityEngine;
 using Sebastian.Geometry;
 using System;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Loader : MonoBehaviour {
 
@@ -180,7 +181,11 @@ public class Loader : MonoBehaviour {
             int j = 0;
             foreach(var coordinate in coordinates)
             {
-                buf[j] = (float)System.Convert.ToDouble(coordinate);
+                if (!float.TryParse(coordinate, out buf[j]))
+                {
+                    Debug.Log("parse " + coordinate + " failed");
+                }
+                //buf[j] = (float)System.Convert.ToDouble(coordinate);
                 j++;
             }
             if(buf.Length < 2) { continue; }
@@ -231,6 +236,26 @@ public class Loader : MonoBehaviour {
         obj.name = buffer[2];
         obj.transform.position += new Vector3(0, Shapes.Count/10f, 0);
         Shapes.Add(new Shape(ReadMesh(buffer), buffer[2]));
-        Shifts.instance.tasks.Add(new Shifts.Task(Loader.instance.Shapes[Shapes.Count - 1]));
+        CreateToogleButton(Shapes[Shapes.Count - 1]);
+        Shifts.instance.tasks.Add(new Shifts.Task(Shapes[Shapes.Count - 1]));
+    }
+
+    int toogleCount = 0;
+    void CreateToogleButton(Shape shape)
+    {
+        GameObject button = (GameObject)Instantiate(Resources.Load("Prefubs/Toogle"));
+        button.transform.SetParent(GameObject.Find("Canvas").transform);
+        button.transform.position = new Vector2(132, 876 - 64*toogleCount);
+        button.name = "Toogle " + toogleCount;
+        button.GetComponentInChildren<Text>().text = shape.name;
+        toogleCount++;
+    }
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        if (pointerEventData.button == PointerEventData.InputButton.Left)
+        {
+            Debug.Log(pointerEventData.selectedObject.gameObject.name);
+        }
     }
 }
+

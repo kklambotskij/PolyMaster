@@ -140,13 +140,13 @@ public class Shifts : MonoBehaviour {
         moving = false;
         pause = true;
         currentTask = -1;
+        ChangeGlobalSpeed();
     }
 
     private void Start()
     {
         NextTask();
     }
-
     public void Shift(string name, Vector3 shift, float speed, bool hard)
     {
         int index = Loader.instance.FindShape(name);

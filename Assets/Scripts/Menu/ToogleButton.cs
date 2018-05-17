@@ -17,6 +17,7 @@ public class ToogleButton : MonoBehaviour {
         else
         {
             Loader.instance.Shapes[index].gameObject.SetActive(true);
+            Loader.instance.SetActiveObject(Loader.instance.Shapes[index]);
         }
     }
 }

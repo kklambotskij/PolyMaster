@@ -22,7 +22,47 @@ public class Loader : MonoBehaviour {
     }
 
     public List<Color> colors = new List<Color>();
+    public Shape activePoly;
 
+    public void SetActiveObject(Shape obj)
+    {
+        activePoly = obj;
+    }
+
+    void Update()
+    {
+        PolyControl();
+    }
+
+    bool startRotate;
+    Vector3 mousePos;
+
+    void PolyControl()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            mousePos = Input.mousePosition;
+            startRotate = true;
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            startRotate = false;
+        }
+        if (Input.GetKey(KeyCode.F) && startRotate)
+        {
+            RotatePoly();
+        }
+    }
+    void RotatePoly()
+    {
+        if (activePoly != null)
+        {
+            //activePoly.transform.Rotate(new Vector3(0, Input.mousePosition.y - mousePos.y, 0));
+            //activePoly.gameObject.transform.RotateAroundLocal(new Vector3(activePoly.points[0].x, 0, activePoly.points[0].z), Input.mousePosition.y - mousePos.y);
+            activePoly.gameObject.transform.RotateAround(activePoly.points[0], new Vector3(0, 1, 0), Input.mousePosition.y - mousePos.y);
+            mousePos = Input.mousePosition;
+        }
+    }
 #warning Todo: Add more colors
     public void InitColors()
     {

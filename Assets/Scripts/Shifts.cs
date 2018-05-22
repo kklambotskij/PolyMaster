@@ -231,7 +231,7 @@ public class Shifts : MonoBehaviour {
                         point = (GameObject)Instantiate(Resources.Load("Prefubs/Point"));
                         point.transform.position = new Vector3(tasks[currentTask].point.x, 5, tasks[currentTask].point.z);
                         GameObject parent = GameObject.Find(tasks[currentTask].markParent);
-                        if (parent == null) { break; }
+                        if (parent == null) { NextTask(); break; }
                         point.transform.SetParent(parent.transform);
                         point.name = tasks[currentTask].markName;
                     }

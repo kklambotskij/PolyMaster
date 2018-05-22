@@ -1,3 +1,9 @@
 new poly polyF 0:0 0:4 4:4 4:0
 new poly polyA 1:0 0:1 1:2 2:1
 new poly polyB 2:0 0:1 3:2
+new poly charpolyinnerAF 1:0 1:2 3:2 3:0
+new poly charpolyinnerBF 2:0 2:2 3:2 3:0
+new poly charpolyouterAB 2:-2 0:-1 -1:0 0:1 3:2 4:1 3:-1
+new poly charpolyouterAFAB -1:-1 -1:1 0:3 1:4 3:4 5:3 6:2 6:0 5:-1 2:-2 0:-2
+new poly intersection 2:0 2:2 3:2 3:0
+new poly touchp 1:0.5 2:2

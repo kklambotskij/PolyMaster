@@ -9,6 +9,8 @@ public class RunTimeCreator : MonoBehaviour {
     ShapeCreator shapeCreator;
     Loader loader;
     public Color fillColor;
+    List<GameObject> Sides = new List<GameObject>();
+    int showedSides = -1;
     // Use this for initialization
     float GetAngle(Vector3 center, Vector3 point)
     {
@@ -64,11 +66,15 @@ public class RunTimeCreator : MonoBehaviour {
             obj.transform.Rotate(new Vector3(0, -angle, 0));
             obj.transform.position = new Vector3(side.x / 2, 5, side.z / 2);
             obj.transform.SetParent(transform.parent);
+            Sides.Add(obj);
         }
     }
     public void HideBorder()
     {
-        transform.parent.Find("Shape Creator").gameObject.SetActive(false);
+        for (int i = 0; i < Sides.Count; i++)
+        {
+            Sides[i].SetActive(false);
+        }
     }
     public void ShowBorder()
     {
@@ -81,6 +87,12 @@ public class RunTimeCreator : MonoBehaviour {
     public void ShowShape()
     {
         transform.parent.Find("Shape Mesh").gameObject.SetActive(true);
+    }
+    public void ShowNextSide()
+    {
+        if (showedSides >= Sides.Count - 1) { return; }
+        showedSides++;
+        Sides[showedSides].SetActive(true);
     }
     public void LoadShape()
     {

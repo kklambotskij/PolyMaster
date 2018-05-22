@@ -145,7 +145,14 @@ public class Loader : MonoBehaviour {
                     CreateNewMesh(buffer);
                     break;
                 case "move":
-                    MoveMesh(buffer);
+                    if (buffer[2] == "along")
+                    {
+                        CharPoly(buffer);
+                    }
+                    else
+                    {
+                        MoveMesh(buffer);
+                    }
                     break;
                 case "mark":
                     MarkObject(buffer);
@@ -161,7 +168,36 @@ public class Loader : MonoBehaviour {
         }
         sr.Close();
     }
-
+    void CharPoly(string[] buffer)
+    {
+        //move polyA along 2:-2 0:-1 -1:0 0:1 3:2 4:1 3:-1 then new poly charpolyputerAB
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefubs/Shape"));
+        obj.name = buffer[buffer.Length - 1];
+        obj.transform.position += new Vector3(0, Shapes.Count / 10f, 0);
+        List<string> list = new List<string>();
+        list.Add("new");
+        list.Add("poly");
+        list.Add(obj.name);
+        for (int i = 3; i < buffer.Length; i++)
+        {
+            if (buffer[i] == "then") { break; }
+            list.Add(buffer[i]);
+        }
+        Shapes.Add(new Shape(ReadMesh(list.ToArray()), obj.name));
+        CreateToogleButton(Shapes[Shapes.Count - 1]);
+        Shifts.instance.tasks.Add(new Shifts.Task(Shapes[Shapes.Count - 1]));
+        //move polyA along charpolyputerAB then new poly 2:-2 0:-1 -1:0 0:1 3:2 4:1 3:-1
+        for (int i = 1; i < Shapes[Shapes.Count - 1].points.Count; i++)
+        {
+            //move poly polyA to 1:0
+            string[] str = { "move", "poly", buffer[1], "to", Shapes[Shapes.Count - 1].points[i].x + ":" + Shapes[Shapes.Count - 1].points[i].z };
+            MoveMesh(str);
+            Shifts.instance.tasks.Add(new Shifts.Task(Shapes[Shapes.Count - 1], true));
+        }
+        string[] str2 = { "move", "poly", buffer[1], "to", Shapes[Shapes.Count - 1].points[0].x + ":" + Shapes[Shapes.Count - 1].points[0].z };
+        MoveMesh(str2);
+        Shifts.instance.tasks.Add(new Shifts.Task(Shapes[Shapes.Count - 1], true));
+    }
     void ShowError(string[] input)
     {
         if(input.Length < 2) { return; }
@@ -280,7 +316,7 @@ public class Loader : MonoBehaviour {
         obj.transform.position += new Vector3(0, Shapes.Count/10f, 0);
         Shapes.Add(new Shape(ReadMesh(buffer), buffer[2]));
         CreateToogleButton(Shapes[Shapes.Count - 1]);
-        Shifts.instance.tasks.Add(new Shifts.Task(Loader.instance.Shapes[Shapes.Count - 1]));
+        Shifts.instance.tasks.Add(new Shifts.Task(Shapes[Shapes.Count - 1]));
     }
 
     int toogleCount = 0;

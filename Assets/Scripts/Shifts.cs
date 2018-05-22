@@ -29,7 +29,7 @@ public class Shifts : MonoBehaviour {
     
     public class Task
     {
-        public enum Type {Move, Shape, Mark, Hide}
+        public enum Type {Move, Shape, Mark, Hide, Show}
         public Type type;
 
         //Create shape or Move Shape
@@ -41,6 +41,12 @@ public class Shifts : MonoBehaviour {
         {
             done = false;
             type = Type.Shape;
+            this.shape = shape;
+        }
+        public Task(Shape shape, bool show)
+        {
+            done = false;
+            type = Type.Show;
             this.shape = shape;
         }
         public Task(Movement move)
@@ -187,6 +193,7 @@ public class Shifts : MonoBehaviour {
         if(pause) { StartCoroutine(Example()); }
         else
         {
+            RunTimeCreator rtc;
             switch (tasks[currentTask].type)
             {
                 case Task.Type.Move:
@@ -194,18 +201,24 @@ public class Shifts : MonoBehaviour {
                     break;
                 case Task.Type.Shape:
                     moving = false;
-                    RunTimeCreator rtc = tasks[currentTask].shape.gameObject.transform.Find("Shape Creator").GetComponent<RunTimeCreator>();
+                    rtc = tasks[currentTask].shape.gameObject.transform.Find("Shape Creator").GetComponent<RunTimeCreator>();
                     rtc.LoadShape();
                     rtc.CreatePoints();
                     if (tasks[currentTask].shape.name.StartsWith("char"))
                     {
                         rtc.CreateBorder();
+                        rtc.HideBorder();
                         rtc.HideShape();
                     }
                     NextTask();
                     break;
+                case Task.Type.Show:
+                    moving = false;
+                    rtc = tasks[currentTask].shape.gameObject.transform.Find("Shape Creator").GetComponent<RunTimeCreator>();
+                    rtc.ShowNextSide();
+                    NextTask();
+                    break;
                 case Task.Type.Mark:
-#warning Todo: add marked objects by task
                     GameObject point;
                     if (tasks[currentTask].markParent == null)
                     {
@@ -230,6 +243,7 @@ public class Shifts : MonoBehaviour {
                     break;
                 case Task.Type.Hide:
                     GameObject.Find(tasks[currentTask].markName).SetActive(false);
+                    NextTask();
                     break;
             }
         }

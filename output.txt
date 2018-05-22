@@ -1,30 +1,3 @@
 new poly polyF 0:0 0:4 4:4 4:0
 new poly polyA 1:0 0:1 1:2 2:1
 new poly polyB 2:0 0:1 3:2
-message Constructing inner characteristic polygon
-mark point polyA_0
-move poly polyA from 1:0 to 1:0
-move polyA along 1:0 1:2 3:2 3:0 then new poly charpolyinnerAF
-message Constructing inner characteristic polygon
-mark point polyB_0
-move poly polyB from 2:0 to 2:0
-move polyB along 2:0 2:2 3:2 3:0 then new poly charpolyinnerBF
-message Constructing outer characteristic polygon
-move poly polyA from 1:0 to 2:-2
-move polyA along 2:-2 0:-1 -1:0 0:1 3:2 4:1 3:-1 then new poly charpolyouterAB
-move poly polyA to 1:0
-message Constructing outer characteristic polygon
-mark new point charpolyouterABCustom belongs poly charpolyouterAB 2:0
-move poly charpolyouterAB from 2:0 to -1:-1
-move charpolyouterAB along -1:-1 -1:1 0:3 1:4 3:4 5:3 6:2 6:0 5:-1 2:-2 0:-2 then new poly charpolyouterAFAB
-move poly charpolyouterAB to 2:-2
-message Constructing trajectory for polyB such that touch conditions are met
-new chain intersection 2:0 2:2 3:2 3:0
-message Looking for possible positions such that touch conditions are met
-move poly charpolyouterAB from 2:0 to 2:2
-move poly charpolyouterAB from 2:2 to 3:2
-move poly charpolyouterAB from 3:2 to 3:0
-move poly charpolyouterAB from 3:-2 to 2:-2
-new points touchp 1:0.5 2:2
-move poly polyA from 1:0 to 1:0.5
-move poly polyB from 2:0 to 2:2

@@ -134,7 +134,7 @@ public class Shifts : MonoBehaviour {
     public List<Task> tasks = new List<Task>();
     public List<Movement> moves = new List<Movement>();
 
-    void NextTask()
+    public void NextTask()
     {
         if(currentTask < -1 || currentTask > tasks.Count - 2) { return; }
         currentTask++;
@@ -186,7 +186,12 @@ public class Shifts : MonoBehaviour {
     {
         MoveProcessing();
     }
+    public string obj1;
+    public string obj2;
+    void MoveAlong(RaycastHit hit)
+    {
 
+    }
     IEnumerator Example()
     {
         yield return new WaitForSeconds(1/globalSpeed);

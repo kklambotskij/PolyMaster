@@ -269,7 +269,6 @@ public class Loader : MonoBehaviour {
                 //buf[j] = (float)System.Convert.ToDouble(coordinate);
                 j++;
             }
-            if(buf.Length < 2) { continue; }
             verts.Add(new Vector3(buf[0], 0, buf[1]));
         }
         return verts;

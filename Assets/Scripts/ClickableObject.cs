@@ -41,6 +41,8 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             Shifts.instance.obj2 = GetComponentInChildren<Text>().text;
             int shape1 = Loader.instance.FindShape(Shifts.instance.obj1);
             int shape2 = Loader.instance.FindShape(Shifts.instance.obj2);
+            if (shape1 < 0 || shape1 >= Loader.instance.Shapes.Count) { return; }
+            if (shape2 < 0 || shape2 >= Loader.instance.Shapes.Count) { return; }
             Vector3 position = Loader.instance.Shapes[shape1].points[0];
             for (int i = 0; i < Loader.instance.Shapes[shape2].points.Count; i++)
             {

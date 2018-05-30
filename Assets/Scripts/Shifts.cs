@@ -46,7 +46,14 @@ public class Shifts : MonoBehaviour {
         public Task(Shape shape, bool show)
         {
             done = false;
-            type = Type.Show;
+            if (show)
+            {
+                type = Type.Show;
+            }
+            else
+            {
+                type = Type.Hide;
+            }
             this.shape = shape;
         }
         public Task(Movement move)

@@ -39,9 +39,8 @@ GameObject:
   - component: {fileID: 222816519897064068}
   - component: {fileID: 114521940148952460}
   - component: {fileID: 114646334219000206}
-  - component: {fileID: 114661466824686336}
   - component: {fileID: 65285709865631540}
-  - component: {fileID: 114714195389558668}
+  - component: {fileID: 114495676568749666}
   m_Layer: 5
   m_Name: Toogle
   m_TagString: Button
@@ -94,6 +93,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!114 &114495676568749666
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1234258131195148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d2b0760c273e44fae6eb2c68d68f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114521940148952460
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,31 +169,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114521940148952460}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 4d90fe3146d4c67459e5b7cbfc5ff89a, type: 3}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114661466824686336
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234258131195148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b8588ac826cad74f85e4d3ffe6ac162, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114714195389558668
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234258131195148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beaa07f6a139dd746a3488ff459aa7b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &222582976937363996
 CanvasRenderer:
   m_ObjectHideFlags: 1

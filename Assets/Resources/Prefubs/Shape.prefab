@@ -52,8 +52,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4835079775096086}
-  - component: {fileID: 114174259828146288}
-  - component: {fileID: 114771902099041356}
+  - component: {fileID: 114107125937566984}
+  - component: {fileID: 114009848032174676}
   m_Layer: 0
   m_Name: Shape Creator
   m_TagString: Untagged
@@ -155,7 +155,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114174259828146288
+--- !u!114 &114009848032174676
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -163,11 +163,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1755688998275014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d315efc5b18dbe40a18aa1103a1e830, type: 3}
+  m_Script: {fileID: 11500000, guid: cdd7fdcf7edda0741b6a078fe2c2372c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fillColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &114771902099041356
+--- !u!114 &114107125937566984
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1755688998275014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89d046e88a8b34ee18554f8958ee7c15, type: 3}
+  m_Script: {fileID: 11500000, guid: f7a4ab28338f76d4395fabc2369bee1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 33991610674114756}

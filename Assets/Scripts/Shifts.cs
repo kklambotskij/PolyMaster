@@ -158,6 +158,11 @@ public class Shifts : MonoBehaviour {
         int index = Loader.instance.FindShape(name);
         if (index < 0) { return; }
         if (Loader.instance.Shapes[index].gameObject == null) { return; }
+        if (hard && marked != new Vector3(0, 0, 0))
+        {
+            Vector3 sh = Loader.instance.Shapes[index].points[0] - marked;
+            shift += sh;
+        }
         moves.Add(new Movement(Loader.instance.Shapes[index], shift, speed, hard));
         tasks.Add(new Task(moves[moves.Count - 1]));
     }
@@ -188,10 +193,7 @@ public class Shifts : MonoBehaviour {
     }
     public string obj1;
     public string obj2;
-    void MoveAlong(RaycastHit hit)
-    {
-
-    }
+    public Vector3 marked;
     IEnumerator Example()
     {
         yield return new WaitForSeconds(1/globalSpeed);

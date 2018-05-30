@@ -112,7 +112,9 @@ public class Loader : MonoBehaviour {
                         string pointName = input[3];
                         string parentName = input[6];
                         string[] str = { "new", "point", parentName + "_" + pointName, input[7]};
-                        Shifts.instance.tasks.Add(new Shifts.Task(pointName, parentName, ReadMesh(str)[0]));
+                        Vector3 point = ReadMesh(str)[0];
+                        Shifts.instance.marked = point; 
+                        Shifts.instance.tasks.Add(new Shifts.Task(pointName, parentName, point));
                         break;
                     default:
                         break;

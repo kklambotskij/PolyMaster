@@ -4,8 +4,11 @@ using UnityEngine.EventSystems;
 
 public class ClickableObject : MonoBehaviour, IPointerClickHandler
 {
+    bool toogle;
+    GameObject toogleObj;
     private void Start()
     {
+        toogle = false;
         int index = Loader.instance.FindShape(GetComponentInChildren<Text>().text);
         if (index < 0) { return; }
         if (Loader.instance.Shapes[index].gameObject == null) { return; }
@@ -18,17 +21,18 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
     }
     public void TooglePoly()
     {
-        int index = Loader.instance.FindShape(GetComponentInChildren<Text>().text);
-        if (index < 0) { return; }
-        if (Loader.instance.Shapes[index].gameObject == null) { return; }
-        if (Loader.instance.Shapes[index].gameObject.activeSelf)
+        if (!toogle)
         {
-            Loader.instance.Shapes[index].gameObject.SetActive(false);
+            toogleObj = (GameObject)Instantiate(Resources.Load("Prefubs/Arrow"));
+            toogleObj.transform.SetParent(GameObject.Find("Canvas").transform);
+            toogleObj.transform.position += transform.position + new Vector3(100, 0, 0);
+            toogleObj.name = "Arrow";
+            toogle = true;
         }
         else
         {
-            Loader.instance.Shapes[index].gameObject.SetActive(true);
-            Loader.instance.SetActiveObject(Loader.instance.Shapes[index]);
+            Destroy(toogleObj);
+            toogle = false;
         }
     }
     public void OnPointerClick(PointerEventData eventData)
@@ -37,6 +41,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             TooglePoly();
         else if (eventData.button == PointerEventData.InputButton.Middle)
         {
+
             if (Shifts.instance.obj1 == null || Shifts.instance.obj1 == "") { return; }
             Shifts.instance.obj2 = GetComponentInChildren<Text>().text;
             int shape1 = Loader.instance.FindShape(Shifts.instance.obj1);
@@ -54,7 +59,23 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
             Shifts.instance.NextTask();
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
-            Shifts.instance.obj1 = GetComponentInChildren<Text>().text;
+            HidePoly();
+            //Shifts.instance.obj1 = GetComponentInChildren<Text>().text;
+    }
+    public void HidePoly()
+    {
+        int index = Loader.instance.FindShape(GetComponentInChildren<Text>().text);
+        if (index < 0) { return; }
+        if (Loader.instance.Shapes[index].gameObject == null) { return; }
+        if (Loader.instance.Shapes[index].gameObject.activeSelf)
+        {
+            Loader.instance.Shapes[index].gameObject.SetActive(false);
+        }
+        else
+        {
+            Loader.instance.Shapes[index].gameObject.SetActive(true);
+            Loader.instance.SetActiveObject(Loader.instance.Shapes[index]);
+        }
     }
                 
 }
